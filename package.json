@@ -1,0 +1,22 @@
+{
+  "name": "stellar-adventure-quest",
+  "version": "1.0.0",
+  "description": "Stellar Adventure Quest Platform - Fully on-chain quest system with NFT badges",
+  "scripts": {
+    "build:contracts": "node scripts/build-contracts.js",
+    "build:frontend": "cd frontend && npm run build",
+    "build:all": "npm run build:contracts && npm run build:frontend",
+    "clean": "node scripts/clean.js"
+  },
+  "keywords": [
+    "stellar",
+    "soroban",
+    "quest",
+    "nft",
+    "badges",
+    "gamification",
+    "blockchain"
+  ],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,84 @@
+# CI/CD workflow for testing and building contracts / Sözleşmeleri test etmek ve derlemek için CI/CD workflow'u
+
+name: CI / Sürekli Entegrasyon
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test-contracts:
+    name: Test Contracts / Sözleşmeleri Test Et
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code / Kodu çek
+        uses: actions/checkout@v3
+
+      - name: Install Rust / Rust yükle
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+          override: true
+
+      - name: Cache cargo registry / Cargo kayıt defterini önbelleğe al
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Install Stellar CLI / Stellar CLI yükle
+        run: cargo install --locked stellar-cli@23.1.4
+
+      - name: Build contracts / Sözleşmeleri derle
+        run: |
+          cd contracts/hello_world && stellar contract build
+          cd ../soroban_token && stellar contract build
+          cd ../dashboard_controller && stellar contract build
+
+      - name: Run tests / Testleri çalıştır
+        run: |
+          cd contracts/hello_world && cargo test
+          cd ../soroban_token && cargo test
+          cd ../dashboard_controller && cargo test
+
+  build-frontend:
+    name: Build Frontend / Frontend'i Derle
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code / Kodu çek
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js / Node.js kur
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dir: frontend/node_modules
+
+      - name: Install dependencies / Bağımlılıkları yükle
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend / Frontend'i derle
+        working-directory: frontend
+        run: npm run build
+
+      - name: Check build output / Derleme çıktısını kontrol et
+        run: |
+          if [ ! -d "frontend/dist" ]; then
+            echo "Build failed: dist directory not found"
+            exit 1
+          fi
+
+
+

@@ -1,0 +1,34 @@
+# Rust / Rust
+target/
+Cargo.lock
+**/*.rs.bk
+
+# Node / Node
+node_modules/
+dist/
+build/
+*.log
+.env
+.env.local
+
+# IDE / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS / İşletim Sistemi
+.DS_Store
+Thumbs.db
+
+# Stellar CLI / Stellar CLI
+.stellar/
+*.wasm
+
+# Build artifacts / Derleme çıktıları
+*.wasm
+*.wasm.d
+
+
+
