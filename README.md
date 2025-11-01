@@ -400,4 +400,5 @@ For issues or questions:
 **Built for Stellar Hackathons** 🚀
 **Fully On-Chain | No Local Dependencies | Community-Driven**
 #   S t e l l a r - A d v e n t u r e - Q u e s t - P l a t f o r m  
+ #   S t e l l a r - A d v e n t u r e - Q u e s t - P l a t f o r m  
  
